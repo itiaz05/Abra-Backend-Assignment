@@ -1,1 +1,8 @@
+## cache
 **/__pycache__
+
+## secrets
+**/.env
+
+## DB
+**/migrations/**
