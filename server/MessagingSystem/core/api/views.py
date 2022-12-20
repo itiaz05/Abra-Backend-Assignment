@@ -37,8 +37,20 @@ class MessageViewSet(viewsets.ViewSet):
             },
             status=status.HTTP_201_CREATED,
         )
+    
+    def retrieve(self, request, pk=None):
+        message = Message.objects.filter(receiver=request.user).order_by('creation_date').last()
+        #message = self.get_queryset().order_by('creation_date').last()
+        serializer = MessageSerializer(message)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
     def destroy(self, request, pk=None):
+        if pk is None:
+            return Response(
+                {"message": "You have to provide message id!"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         message = Message.objects.get(id=pk)
         if request.user == message.receiver or request.user == message.sender:
             message.delete()
