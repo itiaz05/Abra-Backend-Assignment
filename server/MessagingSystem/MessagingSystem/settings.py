@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     # Third party apps
     "rest_framework",
     "rest_framework.authtoken",
-
     # Local apps
     "core",
     "accountsManager",
@@ -67,8 +66,6 @@ REST_FRAMEWORK = {
         #         'rest_framework.authentication.SessionAuthentication',
     ],
 }
-
-# AUTH_USER_MODEL = 'accountsManager.Account'
 
 
 ROOT_URLCONF = "MessagingSystem.urls"

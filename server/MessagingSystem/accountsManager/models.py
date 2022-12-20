@@ -3,7 +3,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from django.conf import settings
-from django.contrib.auth.models import AbstractUser
+#from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 # class Account(AbstractUser):
@@ -13,8 +13,7 @@ from django.contrib.auth.models import AbstractUser
 #     is_superuser = models.BooleanField(default=False)
 #     user_permissions = models.CharField(max_length=100, default="")
 #     groups = models.CharField(max_length=100, default="")
-
-
+#     date_joined = models.DateTimeField(auto_now_add=True)
 #     USERNAME_FIELD = 'username'
 
 #     def __str__(self):

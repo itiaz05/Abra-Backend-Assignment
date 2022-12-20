@@ -4,9 +4,8 @@ from rest_framework.response import Response
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.authtoken.models import Token
-from django.contrib.auth import authenticate, login, logout
-from rest_framework.authtoken.views import obtain_auth_token
-
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 
 # Create your views here.
 class UserViewSet(viewsets.ViewSet):
@@ -44,32 +43,36 @@ class UserViewSet(viewsets.ViewSet):
             )
         else:
             return Response(
-                {
-                    "error": serializer.errors
-                },
+                {"error": serializer.errors},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-    @action(detail=False, methods=["post"])
-    def login(self, request):
-        username = request.data["username"]
-        user = User.objects.get(username=username)
-        if user is not None:
-            login(request, user)
-            token = Token.objects.get(user=user)
-            return Response(
-                {"message": "User '" + username + "' have logged in", "token": token.key},
-                status=status.HTTP_200_OK,
-            )
-        else:
-            return Response(
-                "User '" + username + "' have not logged in",
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+    # @action(detail=False, methods=["post"])
+    # def login(self, request):
+    #     username = request.data["username"]
+    #     user = User.objects.get(username=username)
+    #     if user is not None:
+    #         login(request, user)
+    #         token = Token.objects.get(user=user)
+    #         return Response(
+    #             {"message": "User '" + username + "' have logged in", "token": token.key},
+    #             status=status.HTTP_200_OK,
+    #         )
+    #     else:
+    #         return Response(
+    #             "User '" + username + "' have not logged in",
+    #             status=status.HTTP_400_BAD_REQUEST,
+    #         )
 
-    @action(detail=False, methods=["get"])
+    @action(
+        detail=False,
+        methods=["get"],
+        permission_classes=[IsAuthenticated],
+        authentication_classes=[TokenAuthentication],
+    )
     def logout(self, request):
-        logout(request)
+        Token.objects.get(key=request.auth).delete()
+        # logout(request)
         return Response(
             "You have logged out",
             status=status.HTTP_200_OK,

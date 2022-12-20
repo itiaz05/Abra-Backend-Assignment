@@ -3,12 +3,12 @@ from rest_framework import viewsets, status
 from core.models import Message
 from .serializers import MessageSerializer
 from django.contrib.auth.models import User
-from rest_framework.authentication import SessionAuthentication, TokenAuthentication, BasicAuthentication
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 
 class MessageViewSet(viewsets.ViewSet):
-    authentication_classes = [SessionAuthentication, TokenAuthentication, BasicAuthentication]
+    authentication_classes = [TokenAuthentication]  # , BasicAuthentication
     permission_classes = [IsAuthenticated]
 
     def list(self, request):
@@ -20,7 +20,7 @@ class MessageViewSet(viewsets.ViewSet):
 
     def create(self, request):
         sender = User.objects.get(id=request.user.id)
-        receiver = User.objects.get(id=request.data["receiver"])
+        receiver = User.objects.get(username=request.data["receiver"])
         message = request.data["message"]
         subject = request.data["subject"]
         newMessage = Message(
