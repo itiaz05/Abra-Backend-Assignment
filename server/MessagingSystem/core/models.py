@@ -16,10 +16,8 @@ class Message(models.Model):
 
     def __str__(self):
         return (
-            "from: "
-            + self.sender
-            + ", to: "
-            + self.receiver
+            "subject: " 
+            + self.subject 
             + ".\n message: "
             + self.message
         )

@@ -1,13 +1,16 @@
 from rest_framework.response import Response
-
-# from rest_framework.decorators import api_view
 from rest_framework import viewsets, status
 from core.models import Message
 from .serializers import MessageSerializer
 from django.contrib.auth.models import User
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 class MessageViewSet(viewsets.ViewSet):
+    authentication_classes = [SessionAuthentication, TokenAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def list(self, request):
         currUser = request.user
         queryset = Message.objects.filter(receiver=currUser).order_by("-creation_date")
