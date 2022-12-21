@@ -18,6 +18,8 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+
+# Serializer for list of usernames to show
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

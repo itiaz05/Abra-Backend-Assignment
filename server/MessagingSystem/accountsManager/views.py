@@ -16,11 +16,13 @@ class UserViewSet(viewsets.ViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    # Get all users
     def list(self, request):
         queryset = User.objects.all().exclude(username="admin")
         serializer = UserListSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    # Create new user
     def create(self, request):
         first_name = request.data["first_name"]
         last_name = request.data["last_name"]
@@ -52,23 +54,7 @@ class UserViewSet(viewsets.ViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-    # @action(detail=False, methods=["post"])
-    # def login(self, request):
-    #     username = request.data["username"]
-    #     user = User.objects.get(username=username)
-    #     if user is not None:
-    #         login(request, user)
-    #         token = Token.objects.get(user=user)
-    #         return Response(
-    #             {"message": "User '" + username + "' have logged in", "token": token.key},
-    #             status=status.HTTP_200_OK,
-    #         )
-    #     else:
-    #         return Response(
-    #             "User '" + username + "' have not logged in",
-    #             status=status.HTTP_400_BAD_REQUEST,
-    #         )
-
+    # Logout user - this method required token authentication header
     @action(
         detail=False,
         methods=["get"],

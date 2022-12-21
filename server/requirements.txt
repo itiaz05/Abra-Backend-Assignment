@@ -1,6 +1,6 @@
 # Requirements:
 
-* Django Rest Framework 
+* Django Rest Framework V3.12.4
 * Django V4.1.4
-* Python 
-* Django-cors-headers V3.13.0
+* Python V3.10.2
+* Django cors headers V3.13.0
