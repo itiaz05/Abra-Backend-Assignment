@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserListSerializer
 from rest_framework.response import Response
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -15,6 +15,11 @@ class UserViewSet(viewsets.ViewSet):
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    def list(self, request):
+        queryset = User.objects.all().exclude(username="admin")
+        serializer = UserListSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request):
         first_name = request.data["first_name"]
@@ -43,7 +48,7 @@ class UserViewSet(viewsets.ViewSet):
             )
         else:
             return Response(
-                {"error": serializer.errors},
+                {"Error": serializer.errors},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -72,8 +77,7 @@ class UserViewSet(viewsets.ViewSet):
     )
     def logout(self, request):
         Token.objects.get(key=request.auth).delete()
-        # logout(request)
         return Response(
-            "You have logged out",
+            {"message": "You have logged out"},
             status=status.HTTP_200_OK,
         )

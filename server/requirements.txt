@@ -3,3 +3,4 @@
 * Django Rest Framework 
 * Django V4.1.4
 * Python 
+* Django-cors-headers V3.13.0

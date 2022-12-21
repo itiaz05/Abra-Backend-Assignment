@@ -41,12 +41,16 @@ INSTALLED_APPS = [
     # Third party apps
     "rest_framework",
     "rest_framework.authtoken",
+    "corsheaders",
     # Local apps
     "core",
     "accountsManager",
 ]
 
 MIDDLEWARE = [
+    # Third party middleware
+    "corsheaders.middleware.CorsMiddleware",
+    # Django middleware
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -56,14 +60,15 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS: True
+
 REST_FRAMEWORK = {
     #     'DEFAULT_PERMISSION_CLASSES': [
     #         'rest_framework.permissions.IsAuthenticated',
     #     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
-        #         'rest_framework.authentication.BasicAuthentication',
-        #         'rest_framework.authentication.SessionAuthentication',
     ],
 }
 
