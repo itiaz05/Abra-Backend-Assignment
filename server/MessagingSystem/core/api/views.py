@@ -22,7 +22,9 @@ class MessageViewSet(viewsets.ViewSet):
         else:
             queryset = Message.objects.filter(receiver=currUser).order_by("-creation_date")
         serializer = MessageSerializer(queryset, many=True)
-        queryset.update(unread=False)
+        for message in queryset:
+            message.unread=False
+            message.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request):
